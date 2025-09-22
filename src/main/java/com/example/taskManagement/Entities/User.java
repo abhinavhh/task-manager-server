@@ -2,8 +2,10 @@ package com.example.taskManagement.Entities;
 
 import com.example.taskManagement.Enums.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
+@Builder
 @Table(name = "users")
 public class User {
 
