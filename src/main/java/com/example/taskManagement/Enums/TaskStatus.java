@@ -1,4 +1,7 @@
 package com.example.taskManagement.Enums;
 
-public class TaskStatus {
+public enum TaskStatus {
+    TODO,
+    IN_PROGRESS,
+    COMPLETED
 }

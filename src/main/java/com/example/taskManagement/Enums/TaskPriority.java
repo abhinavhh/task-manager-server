@@ -1,4 +1,7 @@
 package com.example.taskManagement.Enums;
 
-public class TaskPriority {
+public enum TaskPriority {
+    LOW,
+    MEDIUM,
+    HIGH
 }
