@@ -1,20 +1,19 @@
 package com.example.taskManagement.Configs;
 
-import com.example.taskManagement.Entities.User;
 import com.example.taskManagement.Repositories.UserRepository;
-import com.example.taskManagement.Services.UserService;
-import jakarta.servlet.Filter;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter {
@@ -23,9 +22,7 @@ public class JwtAuthFilter {
     private final JwtUtils jwtUtils;
 
     @Autowired
-    private final UserService userService;
-
-    private final UserRepository userRepository;
+    private final UserDetailsService userDetailsService;
 
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -42,7 +39,13 @@ public class JwtAuthFilter {
 
         // check if username is not null and no authentication is already added
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Optional<User> User = this.userRepository.findByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if(jwtUtils.validateToken(jwt, userDetails.getUsername())){
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
         }
+        chain.doFilter(request, response);
     }
 }
