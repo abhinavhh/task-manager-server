@@ -1,10 +1,11 @@
 package com.example.taskManagement.Configs;
 
 import com.example.taskManagement.Enums.Role;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -37,5 +38,36 @@ public class JwtUtils {
                 .setExpiration(expiry)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
+    }
+
+    public String extractUsername(String token){
+        return extractAllClassNames(token).getSubject();
+    }
+
+    public String extractUserRole(String token){
+        Object role =  extractAllClassNames(token).get("role");
+        return role.toString();
+    }
+
+    public boolean isTokenExpired(String token){
+        return extractAllClassNames(token).getExpiration().before(new Date());
+    }
+
+    public boolean validateToken(String token, String username){
+        try {
+            String extracted = extractUsername(token);
+            return (extracted.equals(username) && !isTokenExpired(token));
+        }
+        catch (Exception e) {
+            System.out.println("Valdation: " + e);
+            return false;
+        }
+    }
+    private Claims extractAllClassNames(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
