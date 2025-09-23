@@ -2,14 +2,19 @@ package com.example.taskManagement.Entities;
 
 import com.example.taskManagement.Enums.Role;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.*;
 
 @Entity
-@Builder
 @Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -18,6 +23,6 @@ public class User {
 
     private String password;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Role role;
 }
