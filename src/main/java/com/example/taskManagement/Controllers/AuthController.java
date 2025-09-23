@@ -21,5 +21,4 @@ public class AuthController {
         String response = userService.register(request);
         return ResponseEntity.ok(response);
     }
-
 }

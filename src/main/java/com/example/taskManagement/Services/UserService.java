@@ -13,18 +13,19 @@ public class UserService {
         String username = request.getUsername();
         if(userRepository.findByUsername(username).isPresent()){
             return "Username already Exists";
-        };
+        }
         try {
             User user = User.builder()
                     .username(request.getUsername())
                     .email(request.getEmail())
                     .role(request.getRole())
-                    .password(passwordEncoder.encode(request.getPassword()));
+                    .password(request.getPassword())
+                    .build();
             return "User Registered";
         }
         catch (Exception e) {
-            return "An error occured: "+ e;
             System.out.println(e.getMessage());
+            return "An error occured: "+ e;
         }
     }
 }

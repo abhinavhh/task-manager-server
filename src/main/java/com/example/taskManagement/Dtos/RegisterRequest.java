@@ -4,8 +4,6 @@ import com.example.taskManagement.Enums.Role;
 
 public class RegisterRequest {
     String username;
-
-    @Email
     String email;
     String password;
     Role role;
