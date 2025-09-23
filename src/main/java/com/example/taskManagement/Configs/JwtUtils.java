@@ -41,16 +41,16 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token){
-        return extractAllClassNames(token).getSubject();
+        return extractAllClaims(token).getSubject();
     }
 
-    public String extractUserRole(String token){
-        Object role =  extractAllClassNames(token).get("role");
-        return role.toString();
+    public Role extractUserRole(String token){
+        Object role =  extractAllClaims(token).get("role");
+        return Role.valueOf(role.toString());
     }
 
     public boolean isTokenExpired(String token){
-        return extractAllClassNames(token).getExpiration().before(new Date());
+        return extractAllClaims(token).getExpiration().before(new Date());
     }
 
     public boolean validateToken(String token, String username){
@@ -63,7 +63,7 @@ public class JwtUtils {
             return false;
         }
     }
-    private Claims extractAllClassNames(String token){
+    private Claims extractAllClaims(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
