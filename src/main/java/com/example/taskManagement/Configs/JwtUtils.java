@@ -59,7 +59,7 @@ public class JwtUtils {
             return (extracted.equals(username) && !isTokenExpired(token));
         }
         catch (Exception e) {
-            System.out.println("Valdation: " + e);
+            System.out.println("Validation: " + e);
             return false;
         }
     }
