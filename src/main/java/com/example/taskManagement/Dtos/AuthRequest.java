@@ -1,8 +1,8 @@
 package com.example.taskManagement.Dtos;
 
 public class AuthRequest {
-    String username;
-    String password;
+    private String username;
+    private String password;
 
     public void setUsername(String password) {
         this.username = username;
