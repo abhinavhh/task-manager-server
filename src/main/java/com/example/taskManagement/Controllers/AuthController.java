@@ -72,9 +72,9 @@ public class AuthController {
             log.info("User logged in successfully: {}", username);
 
             return ResponseEntity.ok(Map.of(
-                    "access", token,
+                    "accessToken", token,
                     "role", authenticatedUser.getRole(),
-                    "refresh", refreshToken
+                    "refreshToken", refreshToken
             ));
 
         } catch (BadCredentialsException e) {
@@ -112,7 +112,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refresh");
+        String refreshToken = request.get("refreshToken");
 
         if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -136,7 +136,7 @@ public class AuthController {
             );
 
             return ResponseEntity.ok(Map.of(
-                    "access", newAccessToken
+                    "accessToken", newAccessToken
             ));
 
         } catch (Exception e) {
