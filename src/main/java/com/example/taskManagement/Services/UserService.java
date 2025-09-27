@@ -1,6 +1,7 @@
 package com.example.taskManagement.Services;
 
 import com.example.taskManagement.Entities.User;
+import com.example.taskManagement.Enums.Role;
 import com.example.taskManagement.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class UserService {
 
         // Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.valueOf("USER"));
 
         return userRepository.save(user);
     }
