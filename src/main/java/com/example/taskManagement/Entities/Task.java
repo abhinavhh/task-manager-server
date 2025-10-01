@@ -3,7 +3,11 @@ package com.example.taskManagement.Entities;
 import com.example.taskManagement.Enums.TaskPriority;
 import com.example.taskManagement.Enums.TaskStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -24,4 +28,5 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
 }
