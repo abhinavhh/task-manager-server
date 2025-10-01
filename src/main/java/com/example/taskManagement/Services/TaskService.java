@@ -1,5 +1,6 @@
 package com.example.taskManagement.Services;
 
+import com.example.taskManagement.Configs.JwtUtils;
 import com.example.taskManagement.Dtos.TaskRequest;
 import com.example.taskManagement.Entities.Task;
 import com.example.taskManagement.Entities.User;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class TaskService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final JwtUtils jwtUtils;
 
-    public Task createTask(TaskRequest taskRequest) {
-        User user = userRepository.findById(taskRequest.getUserId())
+    public Task createTask(TaskRequest taskRequest, String token) {
+        String username = jwtUtils.extractUsername(token);
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not Found"));
         Task task = new Task();
         task.setTitle(taskRequest.getTitle());

@@ -3,6 +3,7 @@ package com.example.taskManagement.Controllers;
 import com.example.taskManagement.Dtos.TaskRequest;
 import com.example.taskManagement.Entities.Task;
 import com.example.taskManagement.Services.TaskService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,10 @@ public class TaskController {
 
     private final TaskService taskService;
     @PostMapping("/create")
-    public ResponseEntity<?> createNewTask(@RequestBody TaskRequest taskRequest) {
-        Task task = taskService.createTask(taskRequest);
+    public ResponseEntity<?> createNewTask(@RequestBody TaskRequest taskRequest, HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        String token = header.substring(7);
+        Task task = taskService.createTask(taskRequest, token);
         if(task != null && task.getId() != null) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Task Created Successfully");

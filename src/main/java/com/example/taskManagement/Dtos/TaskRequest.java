@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class TaskRequest {
-
-    private Long userId;
     private String title;
     private String description;
     private TaskStatus status;
